@@ -631,3 +631,37 @@ events:
       Running the CXX compiler's linker: "c:/msys64/mingw64/x86_64-w64-mingw32/bin/ld.exe" "-v"
       GNU ld (Binutils for MinGW-W64 x86_64, built by Brecht Sanders) 2.38
 ...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "C:/Users/Tri Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "C:/Users/Tri Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "C:/Users/Tri Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindThreads.cmake:97 (CHECK_C_SOURCE_COMPILES)"
+      - "C:/Users/Tri Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "C:/Users/Tri Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeFindDependencyMacro.cmake:76 (find_package)"
+      - "C:/msys64/mingw64/lib/cmake/glfw3/glfw3Config.cmake:2 (find_dependency)"
+      - "CMakeLists.txt:19 (find_package)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "C:/Users/Tri Uyen/CLionProjects/untitled2/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-pvn28d"
+      binary: "C:/Users/Tri Uyen/CLionProjects/untitled2/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-pvn28d"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: 'C:/Users/Tri Uyen/CLionProjects/untitled2/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-pvn28d'
+        
+        Run Build Command(s): C:/Users/TRIUYE~1/AppData/Local/Programs/CLion/bin/ninja/win/x64/ninja.exe -v cmTC_320fd
+        [1/2] C:\\msys64\\mingw64\\bin\\gcc.exe -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_320fd.dir/src.c.obj -c "C:/Users/Tri Uyen/CLionProjects/untitled2/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-pvn28d/src.c"
+        [2/2] C:\\WINDOWS\\system32\\cmd.exe /C "cd . && C:\\msys64\\mingw64\\bin\\gcc.exe   CMakeFiles/cmTC_320fd.dir/src.c.obj -o cmTC_320fd.exe -Wl,--out-implib,libcmTC_320fd.dll.a -Wl,--major-image-version,0,--minor-image-version,0  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32 && cd ."
+        
+      exitCode: 0
+...
