@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include "Shader.hpp"
+#include "GUI.hpp"
 
 // Window dimensions
 const unsigned int SCR_WIDTH = 1200;
@@ -30,6 +31,11 @@ float lastFrame = 0.0f;
 // Light settings
 glm::vec3 lightPos = glm::vec3(3.0f, 8.0f, 3.0f);
 glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+float lightIntensity = 1.0f;
+
+// GUI settings
+bool shadowsEnabled = true;
+bool wireframeMode = false;
 
 // Function prototypes
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -83,7 +89,10 @@ int main() {
 
     // Build and compile shaders
     Shader shadowMapShader("shaders/shadow_map.vert", "shaders/shadow_map.frag");
-    Shader lightingShader("shaders/lighting.vert", "shaders/lighting.frag");
+    Shader lightingShader("shaders/phong.vert", "shaders/phong.frag");
+
+    // Initialize GUI
+    GUI gui(window);
 
     // Configure depth map FBO
     unsigned int depthMapFBO;
@@ -129,18 +138,30 @@ int main() {
         // Process input
         processInput(window);
 
+        // Start ImGui frame
+        gui.newFrame();
+
         // Clear screen
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // 1. Render depth of scene to texture (from light's perspective)
-        glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
-        glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
-        glClear(GL_DEPTH_BUFFER_BIT);
-        shadowMapShader.use();
-        shadowMapShader.setUniform("lightSpaceMatrix", lightSpaceMatrix);
-        renderScene(shadowMapShader);
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        // Set wireframe mode
+        if (wireframeMode) {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        } else {
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        }
+
+        // 1. Render depth of scene to texture (from light's perspective) - only if shadows enabled
+        if (shadowsEnabled) {
+            glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
+            glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
+            glClear(GL_DEPTH_BUFFER_BIT);
+            shadowMapShader.use();
+            shadowMapShader.setUniform("lightSpaceMatrix", lightSpaceMatrix);
+            renderScene(shadowMapShader);
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        }
 
         // 2. Render scene normally with shadow mapping
         glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
@@ -155,15 +176,22 @@ int main() {
 
         // Light uniforms
         lightingShader.setUniform("lightPos", lightPos);
-        lightingShader.setUniform("lightColor", lightColor);
+        lightingShader.setUniform("lightColor", lightColor * lightIntensity);
         lightingShader.setUniform("viewPos", cameraPos);
         lightingShader.setUniform("lightSpaceMatrix", lightSpaceMatrix);
+        lightingShader.setUniform("shadowsEnabled", shadowsEnabled);
 
-        // Bind shadow map
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, depthMap);
+        // Bind shadow map only if shadows are enabled
+        if (shadowsEnabled) {
+            glActiveTexture(GL_TEXTURE1);
+            glBindTexture(GL_TEXTURE_2D, depthMap);
+        }
 
         renderScene(lightingShader);
+
+        // Render GUI
+        gui.showMainWindow(&shadowsEnabled, &lightPos, &lightColor, &cameraPos, &lightIntensity, &wireframeMode);
+        gui.render();
 
         // Swap buffers and poll events
         glfwSwapBuffers(window);
@@ -336,6 +364,8 @@ void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
+    // Only process camera input if ImGui doesn't want the keyboard
+    // (This prevents camera movement when typing in ImGui fields)
     float cameraSpeed = 5.0f * deltaTime;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         cameraPos += cameraSpeed * cameraFront;
