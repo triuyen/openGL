@@ -1,2 +1,9 @@
-cmake-build-debug/
+# ImGui
+imgui.ini
+
+# Also add these while you're at it
+cmake-build-*/
+build/
+.vs/
+*.user
 .idea/
