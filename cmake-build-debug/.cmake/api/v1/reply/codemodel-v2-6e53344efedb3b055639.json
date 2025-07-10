@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "TP_dragon::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-TP_dragon-Debug-04da5196868e3773ff6e.json",
+					"jsonFile" : "target-TP_dragon-Debug-9e73d9bf831cde387429.json",
 					"name" : "TP_dragon",
 					"projectIndex" : 0
 				}
@@ -49,8 +49,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon/cmake-build-debug",
-		"source" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon"
+		"build" : "C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug",
+		"source" : "C:/Users/Tri Uyen/CLionProjects/OpenGL"
 	},
 	"version" : 
 	{

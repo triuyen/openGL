@@ -66,15 +66,15 @@
 			[
 				{
 					"backtrace" : 3,
-					"path" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon"
+					"path" : "C:/Users/Tri Uyen/CLionProjects/OpenGL"
 				},
 				{
 					"backtrace" : 3,
-					"path" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon/libs"
+					"path" : "C:/Users/Tri Uyen/CLionProjects/OpenGL/libs"
 				},
 				{
 					"backtrace" : 3,
-					"path" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon/src"
+					"path" : "C:/Users/Tri Uyen/CLionProjects/OpenGL/src"
 				}
 			],
 			"language" : "CXX",

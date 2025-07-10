@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/Tri Uyen/CLionProjects/TP_dragon/cmake-build-debug"
+			"value" : "c:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -575,7 +575,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon/cmake-build-debug/CMakeFiles/pkgRedirects"
+			"value" : "C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeFiles/pkgRedirects"
 		},
 		{
 			"name" : "CMAKE_GENERATOR",
@@ -659,7 +659,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon"
+			"value" : "C:/Users/Tri Uyen/CLionProjects/OpenGL"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -699,7 +699,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "C:/Users/TRIUYE~1/AppData/Local/Programs/CLion/bin/ninja/win/x64/ninja.exe"
+			"value" : "C:/Users/Tri Uyen/AppData/Local/Programs/CLion/bin/ninja/win/x64/ninja.exe"
 		},
 		{
 			"name" : "CMAKE_MODULE_LINKER_FLAGS",
@@ -1282,42 +1282,6 @@
 			"value" : "FALSE"
 		},
 		{
-			"name" : "DragonOpenGL_BINARY_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon/cmake-build-debug"
-		},
-		{
-			"name" : "DragonOpenGL_IS_TOP_LEVEL",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "ON"
-		},
-		{
-			"name" : "DragonOpenGL_SOURCE_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon"
-		},
-		{
 			"name" : "FIND_PACKAGE_MESSAGE_DETAILS_GLEW",
 			"properties" : 
 			[
@@ -1398,18 +1362,6 @@
 			"value" : ""
 		},
 		{
-			"name" : "GLM_INCLUDE_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Path to a file."
-				}
-			],
-			"type" : "PATH",
-			"value" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon/libs"
-		},
-		{
 			"name" : "OPENGL_gl_LIBRARY",
 			"properties" : 
 			[
@@ -1442,42 +1394,6 @@
 			"value" : "glu32"
 		},
 		{
-			"name" : "OpenGL3DScene_BINARY_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon/cmake-build-debug"
-		},
-		{
-			"name" : "OpenGL3DScene_IS_TOP_LEVEL",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "ON"
-		},
-		{
-			"name" : "OpenGL3DScene_SOURCE_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon"
-		},
-		{
 			"name" : "TP_dragon_BINARY_DIR",
 			"properties" : 
 			[
@@ -1487,7 +1403,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon/cmake-build-debug"
+			"value" : "C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug"
 		},
 		{
 			"name" : "TP_dragon_IS_TOP_LEVEL",
@@ -1511,43 +1427,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon"
-		},
-		{
-			"name" : "Tp_dragon_BINARY_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon/cmake-build-debug"
-		},
-		{
-			"name" : "Tp_dragon_IS_TOP_LEVEL",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "ON"
-		},
-		{
-			"name" : "Tp_dragon_SOURCE_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon"
+			"value" : "C:/Users/Tri Uyen/CLionProjects/OpenGL"
 		},
 		{
 			"name" : "_CMAKE_LINKER_PUSHPOP_STATE_SUPPORTED",
@@ -1572,30 +1452,6 @@
 			],
 			"type" : "PATH",
 			"value" : "C:/msys64/mingw64/lib/cmake/glfw3"
-		},
-		{
-			"name" : "glm_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "The directory containing a CMake configuration file for glm."
-				}
-			],
-			"type" : "PATH",
-			"value" : "glm_DIR-NOTFOUND"
-		},
-		{
-			"name" : "imgui_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "The directory containing a CMake configuration file for imgui."
-				}
-			],
-			"type" : "PATH",
-			"value" : "imgui_DIR-NOTFOUND"
 		}
 	],
 	"kind" : "cache",

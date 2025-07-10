@@ -1,7 +1,4 @@
 # ninja log v6
-4	368	7736169118866242	build.ninja	1553e709df659da7
-3329	3529	7664515467342001	TP_dragon.exe	dfea7f712b19d3a
-8	3328	7664515434125219	CMakeFiles/TP_dragon.dir/main.cpp.obj	cc53dd851d1afd84
-3	352	7736169118866242	build.ninja	1553e709df659da7
-24	3596	7736169119834245	CMakeFiles/TP_dragon.dir/main.cpp.obj	6c7b10dbd4fb84ee
+3	352	7736961550138071	build.ninja	1553e709df659da7
 3597	3942	7736169155565444	TP_dragon.exe	dfea7f712b19d3a
+24	3596	7736169119834245	CMakeFiles/TP_dragon.dir/main.cpp.obj	6c7b10dbd4fb84ee

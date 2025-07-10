@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(TP_dragon)
+project(OpenGL)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -14,10 +14,10 @@ find_package(glfw3 REQUIRED)
 configure_file(${CMAKE_SOURCE_DIR}/dragon_texture.png ${CMAKE_BINARY_DIR}/dragon_texture.png COPYONLY)
 
 # Add executable
-add_executable(TP_dragon main.cpp)
+add_executable(OpenGL main.cpp)
 
 # Include directories
-target_include_directories(TP_dragon PRIVATE
+target_include_directories(OpenGL PRIVATE
         ${CMAKE_SOURCE_DIR}         # For dataDragon.h and stb_image.h
         ${CMAKE_SOURCE_DIR}/libs    # For GLM headers
         ${CMAKE_SOURCE_DIR}/src
