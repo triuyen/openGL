@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "TP_dragon.exe"
+			"path" : "OpenGL.exe"
 		},
 		{
-			"path" : "TP_dragon.pdb"
+			"path" : "OpenGL.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -29,19 +29,19 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 17,
+				"line" : 15,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 29,
+				"line" : 31,
 				"parent" : 0
 			},
 			{
 				"command" : 2,
 				"file" : 0,
-				"line" : 20,
+				"line" : 22,
 				"parent" : 0
 			}
 		]
@@ -66,15 +66,15 @@
 			[
 				{
 					"backtrace" : 3,
-					"path" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon"
+					"path" : "C:/Users/Tri Uyen/CLionProjects/OpenGL"
 				},
 				{
 					"backtrace" : 3,
-					"path" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon/libs"
+					"path" : "C:/Users/Tri Uyen/CLionProjects/OpenGL/libs"
 				},
 				{
 					"backtrace" : 3,
-					"path" : "C:/Users/Tri Uyen/CLionProjects/TP_dragon/src"
+					"path" : "C:/Users/Tri Uyen/CLionProjects/OpenGL/src"
 				}
 			],
 			"language" : "CXX",
@@ -92,7 +92,7 @@
 			]
 		}
 	],
-	"id" : "TP_dragon::@6890427a1f51a3e7e1df",
+	"id" : "OpenGL::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -142,8 +142,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "TP_dragon",
-	"nameOnDisk" : "TP_dragon.exe",
+	"name" : "OpenGL",
+	"nameOnDisk" : "OpenGL.exe",
 	"paths" : 
 	{
 		"build" : ".",

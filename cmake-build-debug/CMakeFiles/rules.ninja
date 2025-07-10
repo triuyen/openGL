@@ -6,11 +6,7 @@
 # It is included in the main 'build.ninja'.
 
 # =============================================================================
-<<<<<<< HEAD
 # Project: OpenGL
-=======
-# Project: TP_dragon
->>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
 # Configurations: Debug
 # =============================================================================
 # =============================================================================
@@ -18,11 +14,7 @@
 #############################################
 # Rule for compiling CXX files.
 
-<<<<<<< HEAD
 rule CXX_COMPILER__OpenGL_unscanned_Debug
-=======
-rule CXX_COMPILER__TP_dragon_unscanned_Debug
->>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
   depfile = $DEP_FILE
   deps = gcc
   command = ${LAUNCHER}${CODE_CHECK}C:\msys64\mingw64\bin\c++.exe $DEFINES $INCLUDES $FLAGS -MD -MT $out -MF $DEP_FILE -o $out -c $in
@@ -32,11 +24,7 @@ rule CXX_COMPILER__TP_dragon_unscanned_Debug
 #############################################
 # Rule for linking CXX executable.
 
-<<<<<<< HEAD
 rule CXX_EXECUTABLE_LINKER__OpenGL_Debug
-=======
-rule CXX_EXECUTABLE_LINKER__TP_dragon_Debug
->>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
   command = C:\WINDOWS\system32\cmd.exe /C "$PRE_LINK && C:\msys64\mingw64\bin\c++.exe $FLAGS $LINK_FLAGS $in -o $TARGET_FILE -Wl,--out-implib,$TARGET_IMPLIB -Wl,--major-image-version,0,--minor-image-version,0 $LINK_PATH $LINK_LIBRARIES && $POST_BUILD"
   description = Linking CXX executable $TARGET_FILE
   restat = $RESTAT
@@ -54,11 +42,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-<<<<<<< HEAD
   command = "C:\Users\Tri Uyen\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe" --regenerate-during-build -S"C:\Users\Tri Uyen\CLionProjects\OpenGL" -B"C:\Users\Tri Uyen\CLionProjects\OpenGL\cmake-build-debug"
-=======
-  command = "C:\Users\Tri Uyen\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe" --regenerate-during-build -S"C:\Users\Tri Uyen\CLionProjects\TP_dragon" -B"C:\Users\Tri Uyen\CLionProjects\TP_dragon\cmake-build-debug"
->>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
   description = Re-running CMake...
   generator = 1
 
@@ -67,7 +51,7 @@ rule RERUN_CMAKE
 # Rule for cleaning all built files.
 
 rule CLEAN
-  command = C:\Users\TRIUYE~1\AppData\Local\Programs\CLion\bin\ninja\win\x64\ninja.exe $FILE_ARG -t clean $TARGETS
+  command = "C:\Users\Tri Uyen\AppData\Local\Programs\CLion\bin\ninja\win\x64\ninja.exe" $FILE_ARG -t clean $TARGETS
   description = Cleaning all built files...
 
 
@@ -75,6 +59,6 @@ rule CLEAN
 # Rule for printing all primary targets available.
 
 rule HELP
-  command = C:\Users\TRIUYE~1\AppData\Local\Programs\CLion\bin\ninja\win\x64\ninja.exe -t targets
+  command = "C:\Users\Tri Uyen\AppData\Local\Programs\CLion\bin\ninja\win\x64\ninja.exe" -t targets
   description = All primary targets available:
 
