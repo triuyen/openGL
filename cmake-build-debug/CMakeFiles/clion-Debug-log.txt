@@ -1,7 +1,4 @@
 "C:\Users\Tri Uyen\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=C:/Users/Tri Uyen/AppData/Local/Programs/CLion/bin/ninja/win/x64/ninja.exe" -G Ninja -S "C:\Users\Tri Uyen\CLionProjects\OpenGL" -B "C:\Users\Tri Uyen\CLionProjects\OpenGL\cmake-build-debug"
-CMake Error at CMakeLists.txt:29 (target_link_libraries):
-  Cannot specify link libraries for target "TP_dragon" which is not built by
-  this project.
-
-
--- Configuring incomplete, errors occurred!
+-- Configuring done (0.3s)
+-- Generating done (0.1s)
+-- Build files have been written to: C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug

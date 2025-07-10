@@ -26,7 +26,7 @@ target_include_directories(OpenGL PRIVATE
 )
 
 # Link libraries
-target_link_libraries(TP_dragon PRIVATE
+target_link_libraries(OpenGL PRIVATE
         ${OPENGL_LIBRARIES}
         GLEW::GLEW
         glfw

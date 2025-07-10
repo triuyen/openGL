@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "TP_dragon.exe"
+			"path" : "OpenGL.exe"
 		},
 		{
-			"path" : "TP_dragon.pdb"
+			"path" : "OpenGL.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -92,7 +92,7 @@
 			]
 		}
 	],
-	"id" : "TP_dragon::@6890427a1f51a3e7e1df",
+	"id" : "OpenGL::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
@@ -142,8 +142,8 @@
 		],
 		"language" : "CXX"
 	},
-	"name" : "TP_dragon",
-	"nameOnDisk" : "TP_dragon.exe",
+	"name" : "OpenGL",
+	"nameOnDisk" : "OpenGL.exe",
 	"paths" : 
 	{
 		"build" : ".",

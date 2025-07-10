@@ -27,7 +27,7 @@
 					[
 						0
 					],
-					"name" : "TP_dragon",
+					"name" : "OpenGL",
 					"targetIndexes" : 
 					[
 						0
@@ -38,9 +38,9 @@
 			[
 				{
 					"directoryIndex" : 0,
-					"id" : "TP_dragon::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-TP_dragon-Debug-9e73d9bf831cde387429.json",
-					"name" : "TP_dragon",
+					"id" : "OpenGL::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-OpenGL-Debug-e7c2b4d2600e4b10eff7.json",
+					"name" : "OpenGL",
 					"projectIndex" : 0
 				}
 			]
