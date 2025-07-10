@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # Install script for directory: C:/Users/Tri Uyen/CLionProjects/OpenGL
+=======
+# Install script for directory: C:/Users/Tri Uyen/CLionProjects/TP_dragon
+>>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -52,6 +56,10 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
+<<<<<<< HEAD
   file(WRITE "C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+=======
+  file(WRITE "C:/Users/Tri Uyen/CLionProjects/TP_dragon/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+>>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

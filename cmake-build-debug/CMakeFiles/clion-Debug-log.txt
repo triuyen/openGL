@@ -1,4 +1,23 @@
 "C:\Users\Tri Uyen\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug "-DCMAKE_MAKE_PROGRAM=C:/Users/Tri Uyen/AppData/Local/Programs/CLion/bin/ninja/win/x64/ninja.exe" -G Ninja -S "C:\Users\Tri Uyen\CLionProjects\OpenGL" -B "C:\Users\Tri Uyen\CLionProjects\OpenGL\cmake-build-debug"
--- Configuring done (0.3s)
--- Generating done (0.1s)
--- Build files have been written to: C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 2. Offending entry: <<<<<<< HEAD
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 6. Offending entry: >>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 114. Offending entry: <<<<<<< HEAD
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 118. Offending entry: >>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 168. Offending entry: <<<<<<< HEAD
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 172. Offending entry: >>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 257. Offending entry: <<<<<<< HEAD
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 268. Offending entry: >>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 275. Offending entry: <<<<<<< HEAD
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 280. Offending entry: >>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 288. Offending entry: <<<<<<< HEAD
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 310. Offending entry: >>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 316. Offending entry: <<<<<<< HEAD
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 329. Offending entry: >>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 334. Offending entry: <<<<<<< HEAD
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 342. Offending entry: >>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 353. Offending entry: <<<<<<< HEAD
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 357. Offending entry: >>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 436. Offending entry: <<<<<<< HEAD
+CMake Error: Parse error in cache file C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt on line 440. Offending entry: >>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
+CMake Error: The current CMakeCache.txt directory C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug/CMakeCache.txt is different than the directory c:/Users/Tri Uyen/CLionProjects/TP_dragon/cmake-build-debug where CMakeCache.txt was created. This may result in binaries being created in the wrong place. If you are not sure, reedit the CMakeCache.txt
+CMake Error: The source "C:/Users/Tri Uyen/CLionProjects/OpenGL/CMakeLists.txt" does not match the source "C:/Users/Tri Uyen/CLionProjects/TP_dragon/CMakeLists.txt" used to generate cache.  Re-run cmake with a different source directory.

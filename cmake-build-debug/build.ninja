@@ -11,7 +11,11 @@
 # =============================================================================
 
 # =============================================================================
+<<<<<<< HEAD
 # Project: OpenGL
+=======
+# Project: TP_dragon
+>>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
 # Configurations: Debug
 # =============================================================================
 
@@ -39,6 +43,7 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
+<<<<<<< HEAD
 cmake_ninja_workdir = C$:/Users/Tri$ Uyen/CLionProjects/OpenGL/cmake-build-debug/
 # =============================================================================
 # Object build statements for EXECUTABLE target OpenGL
@@ -74,13 +79,54 @@ build OpenGL.exe: CXX_EXECUTABLE_LINKER__OpenGL_Debug CMakeFiles/OpenGL.dir/main
   TARGET_FILE = OpenGL.exe
   TARGET_IMPLIB = libOpenGL.dll.a
   TARGET_PDB = OpenGL.exe.dbg
+=======
+cmake_ninja_workdir = C$:/Users/Tri$ Uyen/CLionProjects/TP_dragon/cmake-build-debug/
+# =============================================================================
+# Object build statements for EXECUTABLE target TP_dragon
+
+
+#############################################
+# Order-only phony target for TP_dragon
+
+build cmake_object_order_depends_target_TP_dragon: phony || .
+
+build CMakeFiles/TP_dragon.dir/main.cpp.obj: CXX_COMPILER__TP_dragon_unscanned_Debug C$:/Users/Tri$ Uyen/CLionProjects/TP_dragon/main.cpp || cmake_object_order_depends_target_TP_dragon
+  DEFINES = -DGLFW_DLL
+  DEP_FILE = CMakeFiles\TP_dragon.dir\main.cpp.obj.d
+  FLAGS = -g -std=gnu++11 -fdiagnostics-color=always
+  INCLUDES = -I"C:/Users/Tri Uyen/CLionProjects/TP_dragon" -I"C:/Users/Tri Uyen/CLionProjects/TP_dragon/libs" -I"C:/Users/Tri Uyen/CLionProjects/TP_dragon/src"
+  OBJECT_DIR = CMakeFiles\TP_dragon.dir
+  OBJECT_FILE_DIR = CMakeFiles\TP_dragon.dir
+
+
+# =============================================================================
+# Link build statements for EXECUTABLE target TP_dragon
+
+
+#############################################
+# Link the executable TP_dragon.exe
+
+build TP_dragon.exe: CXX_EXECUTABLE_LINKER__TP_dragon_Debug CMakeFiles/TP_dragon.dir/main.cpp.obj | C$:/msys64/mingw64/lib/libglew32.dll.a C$:/msys64/mingw64/lib/libglfw3.dll.a
+  FLAGS = -g
+  LINK_LIBRARIES = -lopengl32  -lglu32  C:/msys64/mingw64/lib/libglew32.dll.a  C:/msys64/mingw64/lib/libglfw3.dll.a  -lopengl32  -lglu32  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  OBJECT_DIR = CMakeFiles\TP_dragon.dir
+  POST_BUILD = cd .
+  PRE_LINK = cd .
+  TARGET_FILE = TP_dragon.exe
+  TARGET_IMPLIB = libTP_dragon.dll.a
+  TARGET_PDB = TP_dragon.exe.dbg
+>>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
 
 
 #############################################
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
+<<<<<<< HEAD
   COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D "C:\Users\Tri Uyen\CLionProjects\OpenGL\cmake-build-debug" && "C:\Users\Tri Uyen\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+=======
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D "C:\Users\Tri Uyen\CLionProjects\TP_dragon\cmake-build-debug" && "C:\Users\Tri Uyen\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe" -E echo "No interactive CMake dialog available.""
+>>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -91,7 +137,11 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
+<<<<<<< HEAD
   COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D "C:\Users\Tri Uyen\CLionProjects\OpenGL\cmake-build-debug" && "C:\Users\Tri Uyen\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe" --regenerate-during-build -S"C:\Users\Tri Uyen\CLionProjects\OpenGL" -B"C:\Users\Tri Uyen\CLionProjects\OpenGL\cmake-build-debug""
+=======
+  COMMAND = C:\WINDOWS\system32\cmd.exe /C "cd /D "C:\Users\Tri Uyen\CLionProjects\TP_dragon\cmake-build-debug" && "C:\Users\Tri Uyen\AppData\Local\Programs\CLion\bin\cmake\win\x64\bin\cmake.exe" --regenerate-during-build -S"C:\Users\Tri Uyen\CLionProjects\TP_dragon" -B"C:\Users\Tri Uyen\CLionProjects\TP_dragon\cmake-build-debug""
+>>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -101,7 +151,11 @@ build rebuild_cache: phony CMakeFiles/rebuild_cache.util
 # =============================================================================
 # Target aliases.
 
+<<<<<<< HEAD
 build OpenGL: phony OpenGL.exe
+=======
+build TP_dragon: phony TP_dragon.exe
+>>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
 
 # =============================================================================
 # Folder targets.
@@ -109,9 +163,15 @@ build OpenGL: phony OpenGL.exe
 # =============================================================================
 
 #############################################
+<<<<<<< HEAD
 # Folder: C:/Users/Tri Uyen/CLionProjects/OpenGL/cmake-build-debug
 
 build all: phony OpenGL.exe
+=======
+# Folder: C:/Users/Tri Uyen/CLionProjects/TP_dragon/cmake-build-debug
+
+build all: phony TP_dragon.exe
+>>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
 
 # =============================================================================
 # Built-in targets
@@ -120,14 +180,22 @@ build all: phony OpenGL.exe
 #############################################
 # Re-run CMake if any of its inputs changed.
 
+<<<<<<< HEAD
 build build.ninja: RERUN_CMAKE | C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCXXInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCommonLanguageInclude.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeFindDependencyMacro.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeGenericSystem.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeInitializeConfigs.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeLanguageInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeRCInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInitialize.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CheckIncludeFile.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CheckLibraryExists.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU-C.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU-CXX.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindGLEW.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindOpenGL.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPackageHandleStandardArgs.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPackageMessage.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindThreads.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-C.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-Initialize.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-windres.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/WindowsPaths.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/SelectLibraryConfigurations.cmake C$:/Users/Tri$ Uyen/CLionProjects/OpenGL/CMakeLists.txt C$:/Users/Tri$ Uyen/CLionProjects/OpenGL/dragon_texture.png C$:/msys64/mingw64/lib/cmake/glew/CopyImportedTargetProperties.cmake C$:/msys64/mingw64/lib/cmake/glew/glew-config.cmake C$:/msys64/mingw64/lib/cmake/glew/glew-targets-release.cmake C$:/msys64/mingw64/lib/cmake/glew/glew-targets.cmake C$:/msys64/mingw64/lib/cmake/glfw3/glfw3Config.cmake C$:/msys64/mingw64/lib/cmake/glfw3/glfw3ConfigVersion.cmake C$:/msys64/mingw64/lib/cmake/glfw3/glfw3Targets-release.cmake C$:/msys64/mingw64/lib/cmake/glfw3/glfw3Targets.cmake CMakeCache.txt CMakeFiles/3.30.5/CMakeCCompiler.cmake CMakeFiles/3.30.5/CMakeCXXCompiler.cmake CMakeFiles/3.30.5/CMakeRCCompiler.cmake CMakeFiles/3.30.5/CMakeSystem.cmake
+=======
+build build.ninja: RERUN_CMAKE | C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCXXInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCommonLanguageInclude.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeFindDependencyMacro.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeGenericSystem.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeInitializeConfigs.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeLanguageInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeRCInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInitialize.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CheckIncludeFile.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CheckLibraryExists.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU-C.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU-CXX.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindGLEW.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindOpenGL.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPackageHandleStandardArgs.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPackageMessage.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindThreads.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-C.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-Initialize.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-windres.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/WindowsPaths.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/SelectLibraryConfigurations.cmake C$:/Users/Tri$ Uyen/CLionProjects/TP_dragon/CMakeLists.txt C$:/Users/Tri$ Uyen/CLionProjects/TP_dragon/dragon_texture.png C$:/msys64/mingw64/lib/cmake/glew/CopyImportedTargetProperties.cmake C$:/msys64/mingw64/lib/cmake/glew/glew-config.cmake C$:/msys64/mingw64/lib/cmake/glew/glew-targets-release.cmake C$:/msys64/mingw64/lib/cmake/glew/glew-targets.cmake C$:/msys64/mingw64/lib/cmake/glfw3/glfw3Config.cmake C$:/msys64/mingw64/lib/cmake/glfw3/glfw3ConfigVersion.cmake C$:/msys64/mingw64/lib/cmake/glfw3/glfw3Targets-release.cmake C$:/msys64/mingw64/lib/cmake/glfw3/glfw3Targets.cmake CMakeCache.txt CMakeFiles/3.30.5/CMakeCCompiler.cmake CMakeFiles/3.30.5/CMakeCXXCompiler.cmake CMakeFiles/3.30.5/CMakeRCCompiler.cmake CMakeFiles/3.30.5/CMakeSystem.cmake
+>>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
+<<<<<<< HEAD
 build C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCXXInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCommonLanguageInclude.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeFindDependencyMacro.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeGenericSystem.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeInitializeConfigs.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeLanguageInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeRCInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInitialize.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CheckIncludeFile.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CheckLibraryExists.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU-C.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU-CXX.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindGLEW.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindOpenGL.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPackageHandleStandardArgs.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPackageMessage.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindThreads.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-C.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-Initialize.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-windres.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/WindowsPaths.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/SelectLibraryConfigurations.cmake C$:/Users/Tri$ Uyen/CLionProjects/OpenGL/CMakeLists.txt C$:/Users/Tri$ Uyen/CLionProjects/OpenGL/dragon_texture.png C$:/msys64/mingw64/lib/cmake/glew/CopyImportedTargetProperties.cmake C$:/msys64/mingw64/lib/cmake/glew/glew-config.cmake C$:/msys64/mingw64/lib/cmake/glew/glew-targets-release.cmake C$:/msys64/mingw64/lib/cmake/glew/glew-targets.cmake C$:/msys64/mingw64/lib/cmake/glfw3/glfw3Config.cmake C$:/msys64/mingw64/lib/cmake/glfw3/glfw3ConfigVersion.cmake C$:/msys64/mingw64/lib/cmake/glfw3/glfw3Targets-release.cmake C$:/msys64/mingw64/lib/cmake/glfw3/glfw3Targets.cmake CMakeCache.txt CMakeFiles/3.30.5/CMakeCCompiler.cmake CMakeFiles/3.30.5/CMakeCXXCompiler.cmake CMakeFiles/3.30.5/CMakeRCCompiler.cmake CMakeFiles/3.30.5/CMakeSystem.cmake: phony
+=======
+build C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCXXInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeCommonLanguageInclude.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeFindDependencyMacro.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeGenericSystem.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeInitializeConfigs.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeLanguageInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeRCInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInformation.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CMakeSystemSpecificInitialize.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CheckCSourceCompiles.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CheckIncludeFile.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/CheckLibraryExists.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/CMakeCommonCompilerMacros.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU-C.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU-CXX.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Compiler/GNU.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindGLEW.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindOpenGL.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPackageHandleStandardArgs.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindPackageMessage.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/FindThreads.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Internal/CheckSourceCompiles.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-C-ABI.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-C.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX-ABI.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU-CXX.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-GNU.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-Initialize.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows-windres.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/Windows.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/Platform/WindowsPaths.cmake C$:/Users/Tri$ Uyen/AppData/Local/Programs/CLion/bin/cmake/win/x64/share/cmake-3.30/Modules/SelectLibraryConfigurations.cmake C$:/Users/Tri$ Uyen/CLionProjects/TP_dragon/CMakeLists.txt C$:/Users/Tri$ Uyen/CLionProjects/TP_dragon/dragon_texture.png C$:/msys64/mingw64/lib/cmake/glew/CopyImportedTargetProperties.cmake C$:/msys64/mingw64/lib/cmake/glew/glew-config.cmake C$:/msys64/mingw64/lib/cmake/glew/glew-targets-release.cmake C$:/msys64/mingw64/lib/cmake/glew/glew-targets.cmake C$:/msys64/mingw64/lib/cmake/glfw3/glfw3Config.cmake C$:/msys64/mingw64/lib/cmake/glfw3/glfw3ConfigVersion.cmake C$:/msys64/mingw64/lib/cmake/glfw3/glfw3Targets-release.cmake C$:/msys64/mingw64/lib/cmake/glfw3/glfw3Targets.cmake CMakeCache.txt CMakeFiles/3.30.5/CMakeCCompiler.cmake CMakeFiles/3.30.5/CMakeCXXCompiler.cmake CMakeFiles/3.30.5/CMakeRCCompiler.cmake CMakeFiles/3.30.5/CMakeSystem.cmake: phony
+>>>>>>> 7bcef7f3bcf471be88db507d9a83b38bbd3b5f92
 
 
 #############################################
