@@ -4,8 +4,13 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include <memory>
 #include "Shader.hpp"
 #include "GUI.hpp"
+#include "Camera.hpp"
+#include "Light.hpp"
+#include "Material.hpp"
+#include "Geometry.hpp"
 
 // Window dimensions
 const unsigned int SCR_WIDTH = 1200;
@@ -15,10 +20,8 @@ const unsigned int SCR_HEIGHT = 900;
 const unsigned int SHADOW_WIDTH = 1024;
 const unsigned int SHADOW_HEIGHT = 1024;
 
-// Camera settings
-glm::vec3 cameraPos = glm::vec3(0.0f, 3.0f, 8.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+// Camera
+std::unique_ptr<Camera> camera;
 
 // Mouse and time
 float lastX = SCR_WIDTH / 2.0f;
@@ -27,29 +30,32 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
-// Light settings
-glm::vec3 lightPos = glm::vec3(3.0f, 8.0f, 3.0f);
-glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
-float lightIntensity = 1.0f;
-
 // GUI settings
 bool shadowsEnabled = true;
 bool wireframeMode = false;
+bool uiMode = false;  // Mode interface utilisateur
+bool tabKeyPressed = false;  // Pour éviter les répétitions de basculement
+
+// Gestionnaire de lumières
+LightManager lightManager;
+
+// Géométries
+std::unique_ptr<Geometry> sphereGeometry;
+std::unique_ptr<Geometry> cubeGeometry;
+std::unique_ptr<Geometry> planeGeometry;
+
+// Matériaux
+Material metalMaterial;
+Material plasticMaterial;
+Material groundMaterial;
 
 // Function prototypes
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow *window);
 void renderScene(Shader& shader);
-void renderCube();
-void renderPlane();
-unsigned int loadTexture(const char* path);
-
-// Global variables for VAOs
-unsigned int cubeVAO = 0;
-unsigned int cubeVBO = 0;
-unsigned int planeVAO = 0;
-unsigned int planeVBO = 0;
+void initializeScene();
 
 int main() {
     // Initialize GLFW
@@ -63,7 +69,7 @@ int main() {
 #endif
 
     // Create window
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL 3D Scene with Shadow Mapping", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Multi-Light Blinn-Phong Scene", NULL, NULL);
     if (window == NULL) {
         std::cerr << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
@@ -72,9 +78,11 @@ int main() {
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
 
-    // Capture mouse
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    // Commencer en mode UI pour faciliter l'utilisation
+    uiMode = true;
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
     // Initialize GLEW
     if (glewInit() != GLEW_OK) {
@@ -88,7 +96,10 @@ int main() {
 
     // Build and compile shaders
     Shader shadowMapShader("assets/shaders/shadow.vert", "assets/shaders/shadow.frag");
-    Shader lightingShader("assets/shaders/phong.vert", "assets/shaders/phong.frag");
+    Shader lightingShader("assets/shaders/blinn_phong.vert", "assets/shaders/blinn_phong.frag");  // Nouveaux shaders
+
+    // Initialize scene (camera, lights, geometries, materials)
+    initializeScene();
 
     // Initialize GUI
     GUI gui(window);
@@ -118,19 +129,12 @@ int main() {
 
     // Lighting shader configuration
     lightingShader.use();
-    lightingShader.setUniform("diffuseTexture", 0);
     lightingShader.setUniform("shadowMap", 1);
-
-    // Light space matrix calculation
-    float near_plane = 1.0f, far_plane = 15.0f;
-    glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-    glm::mat4 lightView = glm::lookAt(lightPos, glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::mat4 lightSpaceMatrix = lightProjection * lightView;
 
     // Main render loop
     while (!glfwWindowShouldClose(window)) {
         // Per-frame time logic
-        float currentFrame = glfwGetTime();
+        float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
@@ -141,7 +145,7 @@ int main() {
         gui.newFrame();
 
         // Clear screen
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClearColor(0.05f, 0.05f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Set wireframe mode
@@ -151,8 +155,22 @@ int main() {
             glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         }
 
+        // Light space matrix calculation (using first directional light if available)
+        glm::mat4 lightSpaceMatrix = glm::mat4(1.0f);
+        if (lightManager.getLightCount() > 0) {
+            auto& lights = lightManager.getLights();
+            if (lights[0]->type == LightType::DIRECTIONAL) {
+                DirectionalLight* dirLight = static_cast<DirectionalLight*>(lights[0].get());
+                float near_plane = 1.0f, far_plane = 15.0f;
+                glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
+                glm::vec3 lightPos = -dirLight->direction * 5.0f; // Position arbitraire pour la shadow map
+                glm::mat4 lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                lightSpaceMatrix = lightProjection * lightView;
+            }
+        }
+
         // 1. Render depth of scene to texture (from light's perspective) - only if shadows enabled
-        if (shadowsEnabled) {
+        if (shadowsEnabled && lightManager.getLightCount() > 0) {
             glViewport(0, 0, SHADOW_WIDTH, SHADOW_HEIGHT);
             glBindFramebuffer(GL_FRAMEBUFFER, depthMapFBO);
             glClear(GL_DEPTH_BUFFER_BIT);
@@ -162,23 +180,24 @@ int main() {
             glBindFramebuffer(GL_FRAMEBUFFER, 0);
         }
 
-        // 2. Render scene normally with shadow mapping
+        // 2. Render scene normally with lighting
         glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         lightingShader.use();
 
         // View and projection matrices
-        glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        glm::mat4 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+        glm::mat4 projection = camera->getProjectionMatrix(static_cast<float>(SCR_WIDTH) / static_cast<float>(SCR_HEIGHT));
+        glm::mat4 view = camera->getViewMatrix();
         lightingShader.setUniform("projection", projection);
         lightingShader.setUniform("view", view);
 
-        // Light uniforms
-        lightingShader.setUniform("lightPos", lightPos);
-        lightingShader.setUniform("lightColor", lightColor * lightIntensity);
-        lightingShader.setUniform("viewPos", cameraPos);
+        // Camera position
+        lightingShader.setUniform("viewPos", camera->getPosition());
         lightingShader.setUniform("lightSpaceMatrix", lightSpaceMatrix);
         lightingShader.setUniform("shadowsEnabled", shadowsEnabled);
+
+        // Send lights to shader (pour les nouveaux shaders)
+        lightManager.sendLightsToShader(lightingShader);
 
         // Bind shadow map only if shadows are enabled
         if (shadowsEnabled) {
@@ -189,7 +208,8 @@ int main() {
         renderScene(lightingShader);
 
         // Render GUI
-        gui.showMainWindow(&shadowsEnabled, &lightPos, &lightColor, &cameraPos, &lightIntensity, &wireframeMode);
+        glm::vec3 cameraPos = camera->getPosition();
+        gui.showMainWindow(&shadowsEnabled, &lightManager, &cameraPos, &wireframeMode);
         gui.render();
 
         // Swap buffers and poll events
@@ -205,175 +225,148 @@ int main() {
     return 0;
 }
 
+void initializeScene() {
+    // Initialize camera
+    camera = std::make_unique<Camera>(glm::vec3(0.0f, 3.0f, 8.0f));
+
+    // Initialize geometries
+    sphereGeometry = std::make_unique<Geometry>();
+    sphereGeometry->generateSphere(1.0f, 32, 16);
+
+    cubeGeometry = std::make_unique<Geometry>();
+    cubeGeometry->generateCube(2.0f);
+
+    planeGeometry = std::make_unique<Geometry>();
+    planeGeometry->generatePlane(20.0f, 20.0f);
+
+    // Initialize materials
+    metalMaterial = Material::createMetal(glm::vec3(0.7f, 0.7f, 0.8f));
+    plasticMaterial = Material::createPlastic(glm::vec3(0.8f, 0.2f, 0.2f));
+    groundMaterial = Material::createRubber(glm::vec3(0.3f, 0.3f, 0.3f));
+
+    // Initialize lights
+    lightManager.clear();
+
+    // Lumière directionnelle (soleil)
+    DirectionalLight dirLight(glm::vec3(-0.3f, -1.0f, -0.2f), glm::vec3(1.0f, 0.95f, 0.8f), 0.8f);
+    lightManager.addDirectionalLight(dirLight);
+
+    // Lumière ponctuelle (lampe)
+    PointLight pointLight(glm::vec3(3.0f, 4.0f, 3.0f), glm::vec3(0.8f, 0.8f, 1.0f), 1.5f);
+    lightManager.addPointLight(pointLight);
+
+    // Lumière spot (projecteur)
+    SpotLight spotLight(glm::vec3(-3.0f, 6.0f, -3.0f), glm::vec3(0.5f, -1.0f, 0.5f),
+                        15.0f, 25.0f, glm::vec3(1.0f, 0.6f, 0.3f), 2.0f);
+    lightManager.addSpotLight(spotLight);
+}
+
 void renderScene(Shader& shader) {
     // Ground plane
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::scale(model, glm::vec3(10.0f, 1.0f, 10.0f));
+    model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
     shader.setUniform("model", model);
 
     // Material properties for ground
-    shader.setUniform("material.ambient", 0.2f, 0.2f, 0.2f);
-    shader.setUniform("material.diffuse", 0.8f, 0.8f, 0.8f);
-    shader.setUniform("material.specular", 0.1f, 0.1f, 0.1f);
-    shader.setUniform("material.shininess", 32.0f);
+    shader.setUniform("material.ambient", groundMaterial.ambient);
+    shader.setUniform("material.diffuse", groundMaterial.diffuse);
+    shader.setUniform("material.specular", groundMaterial.specular);
+    shader.setUniform("material.shininess", groundMaterial.shininess);
 
-    renderPlane();
+    planeGeometry->render();
 
-    // Cube 1 - Red material
+    // Sphere - Metal material
     model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.0f, 1.0f, 0.0f));
+    model = glm::translate(model, glm::vec3(-2.0f, 1.0f, 0.0f));
     shader.setUniform("model", model);
 
-    shader.setUniform("material.ambient", 0.3f, 0.1f, 0.1f);
-    shader.setUniform("material.diffuse", 0.8f, 0.2f, 0.2f);
-    shader.setUniform("material.specular", 0.9f, 0.9f, 0.9f);
-    shader.setUniform("material.shininess", 64.0f);
+    shader.setUniform("material.ambient", metalMaterial.ambient);
+    shader.setUniform("material.diffuse", metalMaterial.diffuse);
+    shader.setUniform("material.specular", metalMaterial.specular);
+    shader.setUniform("material.shininess", metalMaterial.shininess);
 
-    renderCube();
+    sphereGeometry->render();
 
-    // Cube 2 - Blue material
+    // Cube - Plastic material
     model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(2.0f, 1.0f, 2.0f));
+    model = glm::translate(model, glm::vec3(2.0f, 1.0f, 0.0f));
+    model = glm::rotate(model, static_cast<float>(glfwGetTime()) * 0.5f, glm::vec3(0.0f, 1.0f, 0.0f));
     shader.setUniform("model", model);
 
-    shader.setUniform("material.ambient", 0.1f, 0.1f, 0.3f);
-    shader.setUniform("material.diffuse", 0.2f, 0.2f, 0.8f);
-    shader.setUniform("material.specular", 0.7f, 0.7f, 0.7f);
-    shader.setUniform("material.shininess", 32.0f);
+    shader.setUniform("material.ambient", plasticMaterial.ambient);
+    shader.setUniform("material.diffuse", plasticMaterial.diffuse);
+    shader.setUniform("material.specular", plasticMaterial.specular);
+    shader.setUniform("material.shininess", plasticMaterial.shininess);
 
-    renderCube();
+    cubeGeometry->render();
 
-    // Cube 3 - Green material
+    // Additional objects for variety
+    // Second sphere - different metal
+    Material goldMaterial = Material::createMetal(glm::vec3(1.0f, 0.8f, 0.3f));
     model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(-2.0f, 1.0f, -2.0f));
+    model = glm::translate(model, glm::vec3(0.0f, 2.0f, -3.0f));
     shader.setUniform("model", model);
 
-    shader.setUniform("material.ambient", 0.1f, 0.3f, 0.1f);
-    shader.setUniform("material.diffuse", 0.2f, 0.8f, 0.2f);
-    shader.setUniform("material.specular", 0.5f, 0.5f, 0.5f);
-    shader.setUniform("material.shininess", 16.0f);
+    shader.setUniform("material.ambient", goldMaterial.ambient);
+    shader.setUniform("material.diffuse", goldMaterial.diffuse);
+    shader.setUniform("material.specular", goldMaterial.specular);
+    shader.setUniform("material.shininess", goldMaterial.shininess);
 
-    renderCube();
-}
+    sphereGeometry->render();
 
-void renderCube() {
-    if (cubeVAO == 0) {
-        float vertices[] = {
-                // Back face
-                -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
-                1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f,
-                1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 0.0f,
-                1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 1.0f, 1.0f,
-                -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 0.0f,
-                -1.0f,  1.0f, -1.0f,  0.0f,  0.0f, -1.0f, 0.0f, 1.0f,
-                // Front face
-                -1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f,
-                1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 0.0f,
-                1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f,
-                1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 1.0f, 1.0f,
-                -1.0f,  1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 1.0f,
-                -1.0f, -1.0f,  1.0f,  0.0f,  0.0f,  1.0f, 0.0f, 0.0f,
-                // Left face
-                -1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-                -1.0f,  1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
-                -1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-                -1.0f, -1.0f, -1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-                -1.0f, -1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
-                -1.0f,  1.0f,  1.0f, -1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-                // Right face
-                1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-                1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-                1.0f,  1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 1.0f,
-                1.0f, -1.0f, -1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 1.0f,
-                1.0f,  1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 1.0f, 0.0f,
-                1.0f, -1.0f,  1.0f,  1.0f,  0.0f,  0.0f, 0.0f, 0.0f,
-                // Bottom face
-                -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,
-                1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 1.0f,
-                1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f,
-                1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 1.0f, 0.0f,
-                -1.0f, -1.0f,  1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 0.0f,
-                -1.0f, -1.0f, -1.0f,  0.0f, -1.0f,  0.0f, 0.0f, 1.0f,
-                // Top face
-                -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,
-                1.0f,  1.0f , 1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f,
-                1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 1.0f,
-                1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 1.0f, 0.0f,
-                -1.0f,  1.0f, -1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 1.0f,
-                -1.0f,  1.0f,  1.0f,  0.0f,  1.0f,  0.0f, 0.0f, 0.0f
-        };
+    // Second cube - different plastic
+    Material bluePlasticMaterial = Material::createPlastic(glm::vec3(0.2f, 0.2f, 0.8f));
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(0.0f, 1.0f, 3.0f));
+    model = glm::rotate(model, static_cast<float>(glfwGetTime()) * -0.3f, glm::vec3(1.0f, 0.0f, 1.0f));
+    shader.setUniform("model", model);
 
-        glGenVertexArrays(1, &cubeVAO);
-        glGenBuffers(1, &cubeVBO);
+    shader.setUniform("material.ambient", bluePlasticMaterial.ambient);
+    shader.setUniform("material.diffuse", bluePlasticMaterial.diffuse);
+    shader.setUniform("material.specular", bluePlasticMaterial.specular);
+    shader.setUniform("material.shininess", bluePlasticMaterial.shininess);
 
-        glBindBuffer(GL_ARRAY_BUFFER, cubeVBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-        glBindVertexArray(cubeVAO);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
-    }
-
-    glBindVertexArray(cubeVAO);
-    glDrawArrays(GL_TRIANGLES, 0, 36);
-    glBindVertexArray(0);
-}
-
-void renderPlane() {
-    if (planeVAO == 0) {
-        float planeVertices[] = {
-                // Positions          // Normals           // Texture Coords
-                -1.0f, -1.0f,  1.0f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f,
-                1.0f, -1.0f,  1.0f,  0.0f,  1.0f,  0.0f,  1.0f,  0.0f,
-                1.0f, -1.0f, -1.0f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-                1.0f, -1.0f, -1.0f,  0.0f,  1.0f,  0.0f,  1.0f,  1.0f,
-                -1.0f, -1.0f, -1.0f,  0.0f,  1.0f,  0.0f,  0.0f,  1.0f,
-                -1.0f, -1.0f,  1.0f,  0.0f,  1.0f,  0.0f,  0.0f,  0.0f
-        };
-
-        glGenVertexArrays(1, &planeVAO);
-        glGenBuffers(1, &planeVBO);
-
-        glBindBuffer(GL_ARRAY_BUFFER, planeVBO);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(planeVertices), planeVertices, GL_STATIC_DRAW);
-
-        glBindVertexArray(planeVAO);
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindVertexArray(0);
-    }
-
-    glBindVertexArray(planeVAO);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
-    glBindVertexArray(0);
+    cubeGeometry->render();
 }
 
 void processInput(GLFWwindow *window) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    // Only process camera input if ImGui doesn't want the keyboard
-    // (This prevents camera movement when typing in ImGui fields)
-    float cameraSpeed = 5.0f * deltaTime;
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        cameraPos += cameraSpeed * cameraFront;
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        cameraPos -= cameraSpeed * cameraFront;
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * cameraSpeed;
+    // Basculer entre mode caméra et mode UI avec TAB
+    if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS && !tabKeyPressed) {
+        uiMode = !uiMode;
+        tabKeyPressed = true;
+
+        if (uiMode) {
+            // Mode UI : afficher le curseur
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+            firstMouse = true;  // Reset pour éviter les sauts de caméra
+        } else {
+            // Mode caméra : cacher le curseur
+            glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        }
+    }
+
+    if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_RELEASE) {
+        tabKeyPressed = false;
+    }
+
+    // Contrôles de caméra seulement si pas en mode UI
+    if (!uiMode) {
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+            camera->processKeyboard(FORWARD, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+            camera->processKeyboard(BACKWARD, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+            camera->processKeyboard(LEFT, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+            camera->processKeyboard(RIGHT, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
+            camera->processKeyboard(UP, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+            camera->processKeyboard(DOWN, deltaTime);
+    }
 }
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
@@ -381,35 +374,26 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+    // Ne traiter les mouvements de souris que si on n'est pas en mode UI
+    if (uiMode) return;
+
     if (firstMouse) {
-        lastX = xpos;
-        lastY = ypos;
+        lastX = static_cast<float>(xpos);
+        lastY = static_cast<float>(ypos);
         firstMouse = false;
     }
 
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // Reversed since y-coordinates go from bottom to top
-    lastX = xpos;
-    lastY = ypos;
+    float xoffset = static_cast<float>(xpos) - lastX;
+    float yoffset = lastY - static_cast<float>(ypos); // Reversed since y-coordinates go from bottom to top
+    lastX = static_cast<float>(xpos);
+    lastY = static_cast<float>(ypos);
 
-    float sensitivity = 0.1f;
-    xoffset *= sensitivity;
-    yoffset *= sensitivity;
+    camera->processMouseMovement(xoffset, yoffset);
+}
 
-    static float yaw = -90.0f;
-    static float pitch = 0.0f;
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+    // Ne traiter le scroll que si on n'est pas en mode UI
+    if (uiMode) return;
 
-    yaw += xoffset;
-    pitch += yoffset;
-
-    if (pitch > 89.0f)
-        pitch = 89.0f;
-    if (pitch < -89.0f)
-        pitch = -89.0f;
-
-    glm::vec3 front;
-    front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-    front.y = sin(glm::radians(pitch));
-    front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-    cameraFront = glm::normalize(front);
+    camera->processMouseScroll(static_cast<float>(yoffset));
 }

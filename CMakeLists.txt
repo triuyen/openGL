@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)  # Lowered for better compatibility
+cmake_minimum_required(VERSION 3.20)
 project(OpenGL_TD)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -18,6 +18,12 @@ include_directories(
         ${THIRD_PARTY_DIR}/imgui/backends
         ${THIRD_PARTY_DIR}/stb
 )
+
+# ============================================================================
+# Compiler definitions
+# ============================================================================
+# Force GLEW_STATIC definition pour tous les fichiers
+add_compile_definitions(GLEW_STATIC)
 
 # ============================================================================
 # Platform-specific library setup
@@ -40,9 +46,6 @@ if(WIN32)
 
     # OpenGL
     set(OPENGL_LIBRARY opengl32)
-
-    # Compiler definitions
-    add_compile_definitions(GLEW_STATIC)
 else()
     # Linux/Mac - use system packages
     find_package(glfw3 REQUIRED)
@@ -76,6 +79,8 @@ set(PROJECT_SOURCES
         src/GUI.cpp
         src/Light.cpp
         src/Shader.cpp
+        src/Material.cpp
+        src/Geometry.cpp
 )
 
 # ============================================================================

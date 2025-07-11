@@ -1,7 +1,15 @@
 #pragma once
 
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+
+// Forward declarations
+class LightManager;
+struct DirectionalLight;
+struct PointLight;
+struct SpotLight;
+#include "Light.hpp"
 
 class GUI {
 public:
@@ -15,10 +23,8 @@ public:
 
     // UI controls
     void showMainWindow(bool* shadowsEnabled,
-                        glm::vec3* lightPos,
-                        glm::vec3* lightColor,
+                        LightManager* lightManager,
                         glm::vec3* cameraPos,
-                        float* lightIntensity = nullptr,
                         bool* wireframe = nullptr);
 
     // Utility
@@ -28,4 +34,9 @@ public:
 private:
     bool m_showDemoWindow;
     bool m_showMainWindow;
+
+    // Helper functions for light UI
+    void showDirectionalLightControls(DirectionalLight* light, int index);
+    void showPointLightControls(PointLight* light, int index);
+    void showSpotLightControls(SpotLight* light, int index);
 };

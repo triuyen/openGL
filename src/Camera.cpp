@@ -1,5 +1,6 @@
 #include "Camera.hpp"
 #include <algorithm>
+#include <cmath>
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch)
         : position(position), worldUp(up), yaw(yaw), pitch(pitch),
