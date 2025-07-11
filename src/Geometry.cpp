@@ -199,64 +199,6 @@ void Geometry::generateCone(float radius, float height, int sectorCount) {
     setupMesh();
 }
 
-void Geometry::generateCylinder(float radius, float height, int sectorCount) {
-    vertices.clear();
-    indices.clear();
-
-    const float PI = 3.14159265359f;
-    float sectorStep = 2 * PI / sectorCount;
-
-    // Points du haut
-    for (int i = 0; i <= sectorCount; ++i) {
-        float sectorAngle = i * sectorStep;
-
-        Vertex vertex;
-        vertex.x = radius * cosf(sectorAngle);
-        vertex.y = height * 0.5f;
-        vertex.z = radius * sinf(sectorAngle);
-        vertex.nx = cosf(sectorAngle);
-        vertex.ny = 0.0f;
-        vertex.nz = sinf(sectorAngle);
-        vertex.u = (float)i / sectorCount;
-        vertex.v = 1.0f;
-
-        vertices.push_back(vertex);
-    }
-
-    // Points du bas
-    for (int i = 0; i <= sectorCount; ++i) {
-        float sectorAngle = i * sectorStep;
-
-        Vertex vertex;
-        vertex.x = radius * cosf(sectorAngle);
-        vertex.y = -height * 0.5f;
-        vertex.z = radius * sinf(sectorAngle);
-        vertex.nx = cosf(sectorAngle);
-        vertex.ny = 0.0f;
-        vertex.nz = sinf(sectorAngle);
-        vertex.u = (float)i / sectorCount;
-        vertex.v = 0.0f;
-
-        vertices.push_back(vertex);
-    }
-
-    // Indices pour wireframe
-    for (int i = 0; i < sectorCount; ++i) {
-        // Lignes horizontales (haut et bas)
-        indices.push_back(i);
-        indices.push_back(i + 1);
-
-        indices.push_back(i + sectorCount + 1);
-        indices.push_back(i + sectorCount + 2);
-
-        // Lignes verticales
-        indices.push_back(i);
-        indices.push_back(i + sectorCount + 1);
-    }
-
-    setupMesh();
-}
-
 void Geometry::generateCube(float size) {
     vertices.clear();
     indices.clear();
@@ -357,6 +299,210 @@ void Geometry::generatePlane(float width, float height) {
 
     for (int i = 0; i < 6; ++i) {
         indices.push_back(planeIndices[i]);
+    }
+
+    setupMesh();
+}
+
+void Geometry::generateCylinder(float radius, float height, int sectorCount) {
+    vertices.clear();
+    indices.clear();
+
+    const float PI = 3.14159265359f;
+    float sectorStep = 2 * PI / sectorCount;
+    float halfHeight = height * 0.5f;
+
+    // Génération des vertices pour cylindre solide
+    // Vertices pour le corps du cylindre (besoin de dupliquer pour les normales)
+    for (int i = 0; i <= sectorCount; ++i) {
+        float sectorAngle = i * sectorStep;
+        float x = radius * cosf(sectorAngle);
+        float z = radius * sinf(sectorAngle);
+
+        // Vertex du haut
+        Vertex topVertex;
+        topVertex.x = x;
+        topVertex.y = halfHeight;
+        topVertex.z = z;
+        topVertex.nx = x / radius;  // Normale pointe vers l'extérieur
+        topVertex.ny = 0.0f;
+        topVertex.nz = z / radius;
+        topVertex.u = (float)i / sectorCount;
+        topVertex.v = 1.0f;
+        vertices.push_back(topVertex);
+
+        // Vertex du bas
+        Vertex bottomVertex;
+        bottomVertex.x = x;
+        bottomVertex.y = -halfHeight;
+        bottomVertex.z = z;
+        bottomVertex.nx = x / radius;  // Normale pointe vers l'extérieur
+        bottomVertex.ny = 0.0f;
+        bottomVertex.nz = z / radius;
+        bottomVertex.u = (float)i / sectorCount;
+        bottomVertex.v = 0.0f;
+        vertices.push_back(bottomVertex);
+    }
+
+    int baseIndex = vertices.size();
+
+    // Vertices pour le capuchon du haut (avec normales vers le haut)
+    for (int i = 0; i <= sectorCount; ++i) {
+        float sectorAngle = i * sectorStep;
+        float x = radius * cosf(sectorAngle);
+        float z = radius * sinf(sectorAngle);
+
+        Vertex vertex;
+        vertex.x = x;
+        vertex.y = halfHeight;
+        vertex.z = z;
+        vertex.nx = 0.0f;
+        vertex.ny = 1.0f;  // Normale vers le haut
+        vertex.nz = 0.0f;
+        vertex.u = (x / radius + 1.0f) * 0.5f;
+        vertex.v = (z / radius + 1.0f) * 0.5f;
+        vertices.push_back(vertex);
+    }
+
+    // Centre du haut
+    Vertex topCenter;
+    topCenter.x = 0.0f;
+    topCenter.y = halfHeight;
+    topCenter.z = 0.0f;
+    topCenter.nx = 0.0f;
+    topCenter.ny = 1.0f;
+    topCenter.nz = 0.0f;
+    topCenter.u = 0.5f;
+    topCenter.v = 0.5f;
+    int topCenterIndex = vertices.size();
+    vertices.push_back(topCenter);
+
+    // Vertices pour le capuchon du bas (avec normales vers le bas)
+    for (int i = 0; i <= sectorCount; ++i) {
+        float sectorAngle = i * sectorStep;
+        float x = radius * cosf(sectorAngle);
+        float z = radius * sinf(sectorAngle);
+
+        Vertex vertex;
+        vertex.x = x;
+        vertex.y = -halfHeight;
+        vertex.z = z;
+        vertex.nx = 0.0f;
+        vertex.ny = -1.0f;  // Normale vers le bas
+        vertex.nz = 0.0f;
+        vertex.u = (x / radius + 1.0f) * 0.5f;
+        vertex.v = (z / radius + 1.0f) * 0.5f;
+        vertices.push_back(vertex);
+    }
+
+    // Centre du bas
+    Vertex bottomCenter;
+    bottomCenter.x = 0.0f;
+    bottomCenter.y = -halfHeight;
+    bottomCenter.z = 0.0f;
+    bottomCenter.nx = 0.0f;
+    bottomCenter.ny = -1.0f;
+    bottomCenter.nz = 0.0f;
+    bottomCenter.u = 0.5f;
+    bottomCenter.v = 0.5f;
+    int bottomCenterIndex = vertices.size();
+    vertices.push_back(bottomCenter);
+
+    // Indices pour le corps du cylindre
+    for (int i = 0; i < sectorCount; ++i) {
+        int current = i * 2;
+        int next = (i + 1) * 2;
+
+        // Triangle 1
+        indices.push_back(current);
+        indices.push_back(next);
+        indices.push_back(current + 1);
+
+        // Triangle 2
+        indices.push_back(next);
+        indices.push_back(next + 1);
+        indices.push_back(current + 1);
+    }
+
+    // Indices pour le capuchon du haut
+    for (int i = 0; i < sectorCount; ++i) {
+        indices.push_back(topCenterIndex);
+        indices.push_back(baseIndex + i);
+        indices.push_back(baseIndex + i + 1);
+    }
+
+    // Indices pour le capuchon du bas
+    int bottomBaseIndex = topCenterIndex + 1;
+    for (int i = 0; i < sectorCount; ++i) {
+        indices.push_back(bottomCenterIndex);
+        indices.push_back(bottomBaseIndex + i + 1);
+        indices.push_back(bottomBaseIndex + i);
+    }
+
+    setupMesh();
+}
+
+// CYLINDRE WIREFRAME (pour visualiser les lumières directionnelles)
+void Geometry::generateWireCylinder(float radius, float height, int sectorCount) {
+    vertices.clear();
+    indices.clear();
+
+    const float PI = 3.14159265359f;
+    float sectorStep = 2 * PI / sectorCount;
+    float halfHeight = height * 0.5f;
+
+    // Génération des vertices pour wireframe uniquement
+    // Cercle du haut
+    for (int i = 0; i <= sectorCount; ++i) {
+        float sectorAngle = i * sectorStep;
+
+        Vertex vertex;
+        vertex.x = radius * cosf(sectorAngle);
+        vertex.y = halfHeight;
+        vertex.z = radius * sinf(sectorAngle);
+        vertex.nx = cosf(sectorAngle);
+        vertex.ny = 0.0f;
+        vertex.nz = sinf(sectorAngle);
+        vertex.u = (float)i / sectorCount;
+        vertex.v = 1.0f;
+
+        vertices.push_back(vertex);
+    }
+
+    // Cercle du bas
+    for (int i = 0; i <= sectorCount; ++i) {
+        float sectorAngle = i * sectorStep;
+
+        Vertex vertex;
+        vertex.x = radius * cosf(sectorAngle);
+        vertex.y = -halfHeight;
+        vertex.z = radius * sinf(sectorAngle);
+        vertex.nx = cosf(sectorAngle);
+        vertex.ny = 0.0f;
+        vertex.nz = sinf(sectorAngle);
+        vertex.u = (float)i / sectorCount;
+        vertex.v = 0.0f;
+
+        vertices.push_back(vertex);
+    }
+
+    // Indices pour wireframe
+    // Cercle du haut
+    for (int i = 0; i < sectorCount; ++i) {
+        indices.push_back(i);
+        indices.push_back(i + 1);
+    }
+
+    // Cercle du bas
+    for (int i = 0; i < sectorCount; ++i) {
+        indices.push_back(i + sectorCount + 1);
+        indices.push_back(i + sectorCount + 2);
+    }
+
+    // Lignes verticales (moins nombreuses)
+    for (int i = 0; i <= sectorCount; i += 2) {
+        indices.push_back(i);
+        indices.push_back(i + sectorCount + 1);
     }
 
     setupMesh();

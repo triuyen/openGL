@@ -45,6 +45,7 @@ std::unique_ptr<Geometry> sphereGeometry;
 std::unique_ptr<Geometry> cubeGeometry;
 std::unique_ptr<Geometry> planeGeometry;
 std::unique_ptr<Geometry> groundPlaneGeometry;
+std::unique_ptr<Geometry> cylinderGeometry;
 
 // Géométries pour visualiser les lumières
 std::unique_ptr<Geometry> lightSphereGeometry;  // Pour point lights
@@ -253,19 +254,23 @@ void initializeScene() {
     planeGeometry = std::make_unique<Geometry>();
     planeGeometry->generatePlane(20.0f, 20.0f);
 
-    // Grand plan au sol pour les ombres
+    // Cube large pour le sol
     groundPlaneGeometry = std::make_unique<Geometry>();
-    groundPlaneGeometry->generatePlane(50.0f, 50.0f);
+    groundPlaneGeometry->generateCube(40.0f);
+
+    // Cylindre solide pour les objets de la scène
+    cylinderGeometry = std::make_unique<Geometry>();
+    cylinderGeometry->generateCylinder(1.0f, 1.0f, 24);
 
     // Géométries pour visualiser les lumières
     lightSphereGeometry = std::make_unique<Geometry>();
-    lightSphereGeometry->generateWireSphere(0.3f, 12, 8);
+    lightSphereGeometry->generateWireSphere(1.0f, 16, 8);
 
     lightConeGeometry = std::make_unique<Geometry>();
-    lightConeGeometry->generateCone(1.0f, 2.0f, 16);
+    lightConeGeometry->generateCone(1.0f, 1.0f, 12);
 
     lightCylinderGeometry = std::make_unique<Geometry>();
-    lightCylinderGeometry->generateCylinder(0.2f, 3.0f, 8);
+    lightCylinderGeometry->generateWireCylinder(1.0f, 1.0f, 8);  // Utilise generateWireCylinder
 
     // Initialize materials
     metalMaterial = Material::createMetal(glm::vec3(0.7f, 0.7f, 0.8f));
@@ -290,12 +295,12 @@ void initializeScene() {
 }
 
 void renderScene(Shader& shader) {
-    // Large ground plane for shadows - position it clearly below objects
+    // Sol - Cube large et plat
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.0f, -1.5f, 0.0f));  // Juste sous les objets
+    model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
+    model = glm::scale(model, glm::vec3(1.0f, 0.1f, 1.0f));
     shader.setUniform("model", model);
 
-    // Material properties for ground - make it more visible
     Material visibleGroundMaterial = Material::createRubber(glm::vec3(0.4f, 0.4f, 0.4f));
     shader.setUniform("material.ambient", visibleGroundMaterial.ambient);
     shader.setUniform("material.diffuse", visibleGroundMaterial.diffuse);
@@ -329,7 +334,20 @@ void renderScene(Shader& shader) {
 
     cubeGeometry->render();
 
-    // Additional objects for variety
+    // Cylindre en bois
+    Material woodMaterial = Material::createWood(glm::vec3(0.6f, 0.3f, 0.1f));
+    model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(-4.0f, 1.5f, -2.0f));
+    model = glm::scale(model, glm::vec3(0.8f, 3.0f, 0.8f));
+    shader.setUniform("model", model);
+
+    shader.setUniform("material.ambient", woodMaterial.ambient);
+    shader.setUniform("material.diffuse", woodMaterial.diffuse);
+    shader.setUniform("material.specular", woodMaterial.specular);
+    shader.setUniform("material.shininess", woodMaterial.shininess);
+
+    cylinderGeometry->render();  // Utilise le cylindre solide
+
     // Second sphere - different metal
     Material goldMaterial = Material::createMetal(glm::vec3(1.0f, 0.8f, 0.3f));
     model = glm::mat4(1.0f);

@@ -31,6 +31,7 @@ public:
     void generateWireSphere(float radius = 0.2f, int sectorCount = 12, int stackCount = 8);
     void generateCone(float radius = 1.0f, float height = 2.0f, int sectorCount = 16);
     void generateCylinder(float radius = 0.1f, float height = 2.0f, int sectorCount = 8);
+    void generateWireCylinder(float radius = 0.1f, float height = 2.0f, int sectorCount = 8);
 
     // Initialisation des buffers OpenGL
     void setupMesh();
