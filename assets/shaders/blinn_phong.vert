@@ -23,6 +23,7 @@ void main()
     FragPos = vec3(model * vec4(aPos, 1.0));
 
     // Transform normal to world space
+    // Use normal matrix (inverse transpose of model matrix) for non-uniform scaling
     Normal = mat3(transpose(inverse(model))) * aNormal;
 
     // Pass through texture coordinates
