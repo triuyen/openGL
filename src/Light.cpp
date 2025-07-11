@@ -9,6 +9,7 @@ void DirectionalLight::sendToShader(Shader& shader, int index) const {
 
     shader.setUniform(base + ".type", static_cast<int>(type));
     shader.setUniform(base + ".direction", direction);
+    shader.setUniform(base + ".position", position);  // Pour les nouveaux shaders si nécessaire
     shader.setUniform(base + ".color", color);
     shader.setUniform(base + ".intensity", intensity);
     shader.setUniform(base + ".enabled", enabled);

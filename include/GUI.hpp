@@ -25,7 +25,8 @@ public:
     void showMainWindow(bool* shadowsEnabled,
                         LightManager* lightManager,
                         glm::vec3* cameraPos,
-                        bool* wireframe = nullptr);
+                        bool* wireframe = nullptr,
+                        bool* showLightSources = nullptr);
 
     // Utility
     bool wantCaptureMouse() const;

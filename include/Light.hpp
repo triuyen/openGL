@@ -42,11 +42,14 @@ struct Light {
 // Lumière directionnelle
 struct DirectionalLight : public Light {
     glm::vec3 direction;    // Direction de la lumière
+    glm::vec3 position;     // Position pour la visualisation et shadow mapping
 
     DirectionalLight(const glm::vec3& dir = glm::vec3(-0.2f, -1.0f, -0.3f),
                      const glm::vec3& col = glm::vec3(1.0f),
-                     float intens = 1.0f)
-            : Light(LightType::DIRECTIONAL, col, intens), direction(glm::normalize(dir)) {}
+                     float intens = 1.0f,
+                     const glm::vec3& pos = glm::vec3(0.0f, 10.0f, 0.0f))
+            : Light(LightType::DIRECTIONAL, col, intens),
+              direction(glm::normalize(dir)), position(pos) {}
 
     void sendToShader(Shader& shader, int index) const override;
     virtual ~DirectionalLight() {}

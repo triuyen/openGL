@@ -27,11 +27,17 @@ public:
     void generateCube(float size = 1.0f);
     void generatePlane(float width = 1.0f, float height = 1.0f);
 
+    // Formes pour visualiser les lumières
+    void generateWireSphere(float radius = 0.2f, int sectorCount = 12, int stackCount = 8);
+    void generateCone(float radius = 1.0f, float height = 2.0f, int sectorCount = 16);
+    void generateCylinder(float radius = 0.1f, float height = 2.0f, int sectorCount = 8);
+
     // Initialisation des buffers OpenGL
     void setupMesh();
 
     // Rendu
     void render() const;
+    void renderWireframe() const;  // Nouveau: rendu en lignes pour wireframe
 
     // Nettoyage
     void cleanup();

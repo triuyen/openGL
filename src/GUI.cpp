@@ -46,7 +46,8 @@ void GUI::render() {
 void GUI::showMainWindow(bool* shadowsEnabled,
                          LightManager* lightManager,
                          glm::vec3* cameraPos,
-                         bool* wireframe) {
+                         bool* wireframe,
+                         bool* showLightSources) {
 
     if (!m_showMainWindow) return;
 
@@ -134,6 +135,12 @@ void GUI::showMainWindow(bool* shadowsEnabled,
     if (wireframe) {
         ImGui::Checkbox("Wireframe Mode", wireframe);
     }
+    if (showLightSources) {
+        ImGui::Checkbox("Show Light Sources", showLightSources);
+        if (ImGui::IsItemHovered()) {
+            ImGui::SetTooltip("Affiche les sources de lumière en wireframe");
+        }
+    }
 
     // Demo window toggle
     ImGui::Checkbox("Show ImGui Demo", &m_showDemoWindow);
@@ -151,12 +158,21 @@ void GUI::showDirectionalLightControls(DirectionalLight* light, int index) {
 
     if (ImGui::CollapsingHeader(label.c_str())) {
         ImGui::Checkbox("Enabled", &light->enabled);
+        ImGui::SliderFloat3("Position", &light->position.x, -10.0f, 10.0f);
         ImGui::SliderFloat3("Direction", &light->direction.x, -1.0f, 1.0f);
         ImGui::ColorEdit3("Color", &light->color.x);
         ImGui::SliderFloat("Intensity", &light->intensity, 0.0f, 3.0f);
 
         // Normaliser la direction automatiquement
         light->direction = glm::normalize(light->direction);
+
+        if (ImGui::Button("Point Towards Origin")) {
+            light->direction = glm::normalize(glm::vec3(0.0f) - light->position);
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Point Down")) {
+            light->direction = glm::vec3(0.0f, -1.0f, 0.0f);
+        }
     }
 }
 

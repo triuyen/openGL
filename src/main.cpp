@@ -33,6 +33,7 @@ float lastFrame = 0.0f;
 // GUI settings
 bool shadowsEnabled = true;
 bool wireframeMode = false;
+bool showLightSources = false;  // Nouvelle option
 bool uiMode = false;  // Mode interface utilisateur
 bool tabKeyPressed = false;  // Pour éviter les répétitions de basculement
 
@@ -43,6 +44,12 @@ LightManager lightManager;
 std::unique_ptr<Geometry> sphereGeometry;
 std::unique_ptr<Geometry> cubeGeometry;
 std::unique_ptr<Geometry> planeGeometry;
+std::unique_ptr<Geometry> groundPlaneGeometry;
+
+// Géométries pour visualiser les lumières
+std::unique_ptr<Geometry> lightSphereGeometry;  // Pour point lights
+std::unique_ptr<Geometry> lightConeGeometry;    // Pour spot lights
+std::unique_ptr<Geometry> lightCylinderGeometry; // Pour directional lights
 
 // Matériaux
 Material metalMaterial;
@@ -55,6 +62,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow *window);
 void renderScene(Shader& shader);
+void renderLightSources(Shader& shader);
 void initializeScene();
 
 int main() {
@@ -163,8 +171,9 @@ int main() {
                 DirectionalLight* dirLight = static_cast<DirectionalLight*>(lights[0].get());
                 float near_plane = 1.0f, far_plane = 15.0f;
                 glm::mat4 lightProjection = glm::ortho(-10.0f, 10.0f, -10.0f, 10.0f, near_plane, far_plane);
-                glm::vec3 lightPos = -dirLight->direction * 5.0f; // Position arbitraire pour la shadow map
-                glm::mat4 lightView = glm::lookAt(lightPos, glm::vec3(0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+                glm::mat4 lightView = glm::lookAt(dirLight->position,
+                                                  dirLight->position + dirLight->direction,
+                                                  glm::vec3(0.0f, 1.0f, 0.0f));
                 lightSpaceMatrix = lightProjection * lightView;
             }
         }
@@ -207,9 +216,14 @@ int main() {
 
         renderScene(lightingShader);
 
+        // Render light sources if enabled (always in wireframe)
+        if (showLightSources) {
+            renderLightSources(lightingShader);
+        }
+
         // Render GUI
         glm::vec3 cameraPos = camera->getPosition();
-        gui.showMainWindow(&shadowsEnabled, &lightManager, &cameraPos, &wireframeMode);
+        gui.showMainWindow(&shadowsEnabled, &lightManager, &cameraPos, &wireframeMode, &showLightSources);
         gui.render();
 
         // Swap buffers and poll events
@@ -239,6 +253,20 @@ void initializeScene() {
     planeGeometry = std::make_unique<Geometry>();
     planeGeometry->generatePlane(20.0f, 20.0f);
 
+    // Grand plan au sol pour les ombres
+    groundPlaneGeometry = std::make_unique<Geometry>();
+    groundPlaneGeometry->generatePlane(50.0f, 50.0f);
+
+    // Géométries pour visualiser les lumières
+    lightSphereGeometry = std::make_unique<Geometry>();
+    lightSphereGeometry->generateWireSphere(0.3f, 12, 8);
+
+    lightConeGeometry = std::make_unique<Geometry>();
+    lightConeGeometry->generateCone(1.0f, 2.0f, 16);
+
+    lightCylinderGeometry = std::make_unique<Geometry>();
+    lightCylinderGeometry->generateCylinder(0.2f, 3.0f, 8);
+
     // Initialize materials
     metalMaterial = Material::createMetal(glm::vec3(0.7f, 0.7f, 0.8f));
     plasticMaterial = Material::createPlastic(glm::vec3(0.8f, 0.2f, 0.2f));
@@ -248,7 +276,7 @@ void initializeScene() {
     lightManager.clear();
 
     // Lumière directionnelle (soleil)
-    DirectionalLight dirLight(glm::vec3(-0.3f, -1.0f, -0.2f), glm::vec3(1.0f, 0.95f, 0.8f), 0.8f);
+    DirectionalLight dirLight(glm::vec3(-0.3f, -1.0f, -0.2f), glm::vec3(1.0f, 0.95f, 0.8f), 0.8f, glm::vec3(5.0f, 8.0f, 5.0f));
     lightManager.addDirectionalLight(dirLight);
 
     // Lumière ponctuelle (lampe)
@@ -262,18 +290,19 @@ void initializeScene() {
 }
 
 void renderScene(Shader& shader) {
-    // Ground plane
+    // Large ground plane for shadows - position it clearly below objects
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(0.0f, -1.0f, 0.0f));
+    model = glm::translate(model, glm::vec3(0.0f, -1.5f, 0.0f));  // Juste sous les objets
     shader.setUniform("model", model);
 
-    // Material properties for ground
-    shader.setUniform("material.ambient", groundMaterial.ambient);
-    shader.setUniform("material.diffuse", groundMaterial.diffuse);
-    shader.setUniform("material.specular", groundMaterial.specular);
-    shader.setUniform("material.shininess", groundMaterial.shininess);
+    // Material properties for ground - make it more visible
+    Material visibleGroundMaterial = Material::createRubber(glm::vec3(0.4f, 0.4f, 0.4f));
+    shader.setUniform("material.ambient", visibleGroundMaterial.ambient);
+    shader.setUniform("material.diffuse", visibleGroundMaterial.diffuse);
+    shader.setUniform("material.specular", visibleGroundMaterial.specular);
+    shader.setUniform("material.shininess", visibleGroundMaterial.shininess);
 
-    planeGeometry->render();
+    groundPlaneGeometry->render();
 
     // Sphere - Metal material
     model = glm::mat4(1.0f);
@@ -327,6 +356,90 @@ void renderScene(Shader& shader) {
     shader.setUniform("material.shininess", bluePlasticMaterial.shininess);
 
     cubeGeometry->render();
+}
+
+void renderLightSources(Shader& shader) {
+    // Matériau simple pour les sources de lumière (émissif)
+    Material lightMaterial;
+    lightMaterial.ambient = glm::vec3(1.0f);
+    lightMaterial.diffuse = glm::vec3(1.0f);
+    lightMaterial.specular = glm::vec3(0.0f);
+    lightMaterial.shininess = 1.0f;
+
+    shader.setUniform("material.ambient", lightMaterial.ambient);
+    shader.setUniform("material.diffuse", lightMaterial.diffuse);
+    shader.setUniform("material.specular", lightMaterial.specular);
+    shader.setUniform("material.shininess", lightMaterial.shininess);
+
+    auto& lights = lightManager.getLights();
+    for (auto& light : lights) {
+        if (!light->enabled) continue;
+
+        glm::mat4 model = glm::mat4(1.0f);
+
+        if (light->type == LightType::DIRECTIONAL) {
+            DirectionalLight* dirLight = static_cast<DirectionalLight*>(light.get());
+
+            // Cylindre orienté selon la direction
+            model = glm::translate(model, dirLight->position);
+
+            // Orientation vers la direction
+            glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+            glm::vec3 dir = glm::normalize(dirLight->direction);
+
+            if (abs(glm::dot(dir, up)) < 0.99f) {
+                glm::vec3 right = glm::normalize(glm::cross(up, dir));
+                glm::vec3 newUp = glm::cross(dir, right);
+
+                glm::mat3 rotation;
+                rotation[0] = right;
+                rotation[1] = newUp;
+                rotation[2] = dir;
+
+                model = model * glm::mat4(rotation);
+            }
+
+            shader.setUniform("model", model);
+            lightCylinderGeometry->renderWireframe();
+
+        } else if (light->type == LightType::POINT) {
+            PointLight* pointLight = static_cast<PointLight*>(light.get());
+
+            model = glm::translate(model, pointLight->position);
+            model = glm::scale(model, glm::vec3(0.5f)); // Plus petit
+
+            shader.setUniform("model", model);
+            lightSphereGeometry->renderWireframe();
+
+        } else if (light->type == LightType::SPOT) {
+            SpotLight* spotLight = static_cast<SpotLight*>(light.get());
+
+            model = glm::translate(model, spotLight->position);
+
+            // Orientation du cône selon la direction
+            glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
+            glm::vec3 dir = glm::normalize(spotLight->direction);
+
+            if (abs(glm::dot(dir, up)) < 0.99f) {
+                glm::vec3 right = glm::normalize(glm::cross(up, dir));
+                glm::vec3 newUp = glm::cross(dir, right);
+
+                glm::mat3 rotation;
+                rotation[0] = right;
+                rotation[1] = newUp;
+                rotation[2] = dir;
+
+                model = model * glm::mat4(rotation);
+            }
+
+            // Ajuster la taille du cône selon l'angle
+            float scale = tan(glm::radians(spotLight->outerCutOff));
+            model = glm::scale(model, glm::vec3(scale, 1.0f, scale));
+
+            shader.setUniform("model", model);
+            lightConeGeometry->renderWireframe();
+        }
+    }
 }
 
 void processInput(GLFWwindow *window) {
