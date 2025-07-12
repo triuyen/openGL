@@ -5,12 +5,14 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <memory>
+#include <stb/stb_image.h>
 #include "Shader.hpp"
 #include "GUI.hpp"
 #include "Camera.hpp"
 #include "Light.hpp"
 #include "Material.hpp"
 #include "Geometry.hpp"
+#include "Skybox.h"
 
 // Window dimensions
 const unsigned int SCR_WIDTH = 1200;
@@ -22,6 +24,9 @@ const unsigned int SHADOW_HEIGHT = 1024;
 
 // Camera
 std::unique_ptr<Camera> camera;
+
+// Skybox
+Skybox* skybox = nullptr;
 
 // Mouse and time
 float lastX = SCR_WIDTH / 2.0f;
@@ -140,6 +145,18 @@ int main() {
     lightingShader.use();
     lightingShader.setUniform("shadowMap", 1);
 
+    std::vector<std::string> faces = {
+        "assets/images/right.jpg",   // +X
+        "assets/images/left.jpg",    // -X
+        "assets/images/top.jpg",     // +Y
+        "assets/images/bottom.jpg",  // -Y
+        "assets/images/front.jpg",   // +Z
+        "assets/images/back.jpg"     // -Z
+    };
+
+    skybox = new Skybox(faces);
+
+
     // Main render loop
     while (!glfwWindowShouldClose(window)) {
         // Per-frame time logic
@@ -216,6 +233,10 @@ int main() {
         }
 
         renderScene(lightingShader);
+
+        if (skybox && skybox->isLoaded()) {
+            skybox->render(view, projection);
+        }
 
         // Render light sources if enabled (always in wireframe)
         if (showLightSources) {
@@ -528,3 +549,4 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
 
     camera->processMouseScroll(static_cast<float>(yoffset));
 }
+

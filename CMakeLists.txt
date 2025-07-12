@@ -81,6 +81,8 @@ set(PROJECT_SOURCES
         src/Shader.cpp
         src/Material.cpp
         src/Geometry.cpp
+        src/Skybox.cpp
+        src/stb_image_impl.cpp
 )
 
 # ============================================================================
